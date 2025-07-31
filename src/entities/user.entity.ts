@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import * as bcrypt from 'bcrypt';
+import { BeforeInsert, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Property } from "./property.entity";
 
 @Entity()
@@ -15,8 +16,11 @@ export class User {
     @Column({ unique: true })
     email: string;
 
-    @Column()
+    @Column({ nullable: true })
     avatarUrl: string;
+
+    @Column({ nullable: true }) // made nullable true because there is already records in my db which dont have password
+    password: string;
 
     @CreateDateColumn()
     createdAt: Date;
@@ -28,4 +32,8 @@ export class User {
     @JoinTable({name: "user_liked_properties"})
     likedProperties: Property[];
 
+    @BeforeInsert()
+    async hashPassword() {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
 }

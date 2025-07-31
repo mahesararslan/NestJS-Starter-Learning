@@ -20,7 +20,7 @@ import { Property } from 'src/entities/property.entity';
         },
       }),
     },
-    PropertyService, // Ensure PropertyService is provided
+    PropertyService, 
   ],
 })
 export class PropertyModule {}
