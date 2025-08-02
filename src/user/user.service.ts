@@ -23,15 +23,22 @@ export class UserService {
     return await this.UserRepo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    return await this.UserRepo.findOne({
+      where: { id },
+      select: ['id', 'email', 'firstName', 'lastName', 'createdAt', 'avatarUrl'],
+    });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    await this.UserRepo.update(id, updateUserDto);
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    const user = await this.findOne(id);
+    if (!user) return null;
+    await this.UserRepo.delete(id);
+    return user;
   }
 }
