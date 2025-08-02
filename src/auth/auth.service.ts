@@ -3,6 +3,7 @@ import { UserService } from 'src/user/user.service';
 import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { AuthJwtPayload } from './types/auth-jwtPayload';
+import { CurrentUser } from './types/current-user';
 
 @Injectable()
 export class AuthService {
@@ -21,7 +22,13 @@ export class AuthService {
     async login(userId: number) {
         const payload: AuthJwtPayload = { sub: userId };
         return this.jwtService.sign(payload);
-        
+    }
+
+    async validateJwtUser(userId: number) { 
+        const user = await this.userService.findOne(userId);
+        if (!user) throw new UnauthorizedException('User not found');
+        const currentUser: CurrentUser = { id: user.id, role: user.role };
+        return currentUser;
     }
 
 }

@@ -1,6 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import { BeforeInsert, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Property } from "./property.entity";
+import { Role } from 'src/auth/enums/role.enums';
 
 @Entity()
 export class User {
@@ -21,6 +22,14 @@ export class User {
 
     @Column({ nullable: true }) // made nullable true because there is already records in my db which dont have password
     password: string;
+
+    @Column({
+        type: "enum",
+        enum: Role,
+        default: Role.USER, // default role is USER
+        nullable: false // role should not be null
+    })
+    role: Role;
 
     @CreateDateColumn()
     createdAt: Date;

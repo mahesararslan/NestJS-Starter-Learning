@@ -26,7 +26,7 @@ export class UserService {
   async findOne(id: number) {
     return await this.UserRepo.findOne({
       where: { id },
-      select: ['id', 'email', 'firstName', 'lastName', 'createdAt', 'avatarUrl'],
+      select: ['id', 'email', 'firstName', 'lastName', 'role', 'createdAt', 'avatarUrl'],
     });
   }
 
@@ -36,9 +36,11 @@ export class UserService {
   }
 
   async remove(id: number) {
-    const user = await this.findOne(id);
-    if (!user) return null;
-    await this.UserRepo.delete(id);
-    return user;
+    // const user = await this.findOne(id);
+    // if (!user) return null;
+    // await this.UserRepo.delete(id);
+    // return user;
+
+    return 'this removes the user with id: ' + id;
   }
 }
