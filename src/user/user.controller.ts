@@ -40,9 +40,9 @@ export class UserController {
   }
 
   // as we move to the top (away from the api), the guards are applied in the order they are defined, first the JwtAuthGuard and then the RolesGuard.
-  @Roles(Role.ADMIN)  // only admin can delete a user
-  @UseGuards(RolesGuard) // This should come above the JwtAuthGuard to ensure we get the user role from the request which is set by JwtAuthGuard
-  @UseGuards(JwtAuthGuard)
+  @Roles(Role.EDITOR)  // only admin can delete a user
+  // @UseGuards(RolesGuard) // This should come above the JwtAuthGuard to ensure we get the user role from the request which is set by JwtAuthGuard
+  // @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.userService.remove(id);
